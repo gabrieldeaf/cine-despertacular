@@ -1,14 +1,14 @@
 /**
  * Votação Cine Despertacular · servidor (Google Apps Script)
  * Cole este código em Extensões > Apps Script da planilha de votação.
- * Regra: cada CPF vota UMA vez, escolhendo 1 filme favorito. Votação aberta nos dias 30 e 31/10.
+ * Regra: cada CPF tem UM voto (1 filme favorito) e pode trocar até o encerramento. Vale o último.
  */
 
 // CPF do administrador (somente números). Fica só aqui, não aparece no site.
 const ADMIN_CPF = '52766438220';
 
 const FUSO = 'America/Sao_Paulo';
-const DIAS = ['2026-10-30', '2026-10-31']; // primeiro e último dia de votação
+const ENCERRA = '2026-10-31T22:00:00-03:00'; // fim da votação (Brasília)
 
 const FILMES = [
   { t: 'Amei te Ver', s: 14 },
@@ -29,7 +29,7 @@ const ABA_CAD = 'Cadastros';
 const ABA_VOTOS = 'Votos';
 const ABA_TESTE = 'Teste';
 const CAB_CAD = ['CPF', 'Nome', 'Data do cadastro'];
-const CAB_VOTOS = ['CPF', 'Nome', 'Filme ID', 'Filme', 'Sessão', 'Dia', 'Data/hora'];
+const CAB_VOTOS = ['CPF', 'Nome', 'Filme ID', 'Filme', 'Sessão', 'Data/hora do voto', 'Trocas'];
 
 // ---------------------------------------------------------------- entrada
 function doGet() {
@@ -58,7 +58,7 @@ function entrar(req) {
   if (c === ADMIN_CPF) return { admin: true };
   if (!cpfValido(c)) throw erro('CPF inválido. Confira os números.');
   const u = acharCadastro(c);
-  return { cadastrado: !!u, nome: u ? u.nome : '', voto: votoDe(ABA_VOTOS, c) };
+  return { cadastrado: !!u, nome: u ? u.nome : '', voto: votoDe(ABA_VOTOS, c), encerrada: encerrada() };
 }
 
 function cadastrar(req) {
@@ -90,13 +90,20 @@ function votar(req) {
     if (!cpfValido(c)) throw erro('CPF inválido.');
     const u = acharCadastro(c);
     if (!u) throw erro('CPF não cadastrado.');
-    const st = situacao();
-    if (st !== 'aberta') throw erro(st === 'antes' ? 'A votação abre no dia 30/10.' : 'A votação foi encerrada.');
+    if (encerrada()) throw erro('A votação foi encerrada.');
     nome = u.nome; nomeAba = ABA_VOTOS;
   }
   return comTrava(() => {
-    if (votoDe(nomeAba, c) !== null) throw erro('Este CPF já votou. Cada CPF vota uma vez só.');
-    aba(nomeAba, CAB_VOTOS).appendRow([fmt(c), nome, i, f.t, f.s + 'h', hoje(), agoraTexto()]);
+    const sh = aba(nomeAba, CAB_VOTOS);
+    const fc = fmt(c);
+    const ls = linhas(nomeAba, CAB_VOTOS);
+    const k = ls.findIndex(x => String(x[0]) === fc);
+    if (k === -1) {
+      sh.appendRow([fc, nome, i, f.t, f.s + 'h', agoraTexto(), 0]);
+    } else {
+      const trocas = (Number(ls[k][6]) || 0) + (Number(ls[k][2]) === i ? 0 : 1);
+      sh.getRange(k + 2, 3, 1, 5).setValues([[i, f.t, f.s + 'h', agoraTexto(), trocas]]);
+    }
     return { voto: i };
   });
 }
@@ -133,13 +140,7 @@ function limparTeste(req) {
 }
 
 // ---------------------------------------------------------------- período de votação
-function hoje() { return Utilities.formatDate(new Date(), FUSO, 'yyyy-MM-dd'); }
-function situacao() {
-  const d = hoje();
-  if (d < DIAS[0]) return 'antes';
-  if (d > DIAS[1]) return 'encerrada';
-  return 'aberta';
-}
+function encerrada() { return Date.now() >= new Date(ENCERRA).getTime(); }
 
 // ---------------------------------------------------------------- planilha
 function aba(nome, cab) {

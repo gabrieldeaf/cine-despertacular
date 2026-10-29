@@ -14,7 +14,7 @@ header{background:#5052a0;color:#fff;padding:18px 16px;text-align:center}
 header .logo{width:96px;height:96px;border-radius:24px;display:block;margin:0 auto 8px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
 header h1{font-family:Anton,sans-serif;font-weight:400;letter-spacing:1px;margin:0;font-size:clamp(28px,7vw,44px);color:var(--amarelo)}
 header p{margin:4px 0 0;opacity:.85}
-main{max-width:900px;margin:0 auto;padding:20px 16px 110px}
+main{max-width:1240px;margin:0 auto;padding:20px 16px 110px}
 .box{background:#fff;border-radius:22px;padding:22px;box-shadow:0 8px 30px rgba(60,64,108,.15)}
 h2{font-family:Anton,sans-serif;font-weight:400;color:var(--azul);margin:0 0 14px;font-size:28px}
 label{display:block;font-weight:600;margin:14px 0 6px}
@@ -30,10 +30,12 @@ input:focus{outline:none;border-color:var(--roxo)}
 .hide{display:none!important}
 .aviso{display:inline-flex;align-items:center;gap:8px;background:#f3f1fa;color:var(--azul2);border-radius:12px;padding:10px 14px;font-weight:600;font-size:15px}
 .aviso.fim{background:#f4e3e3;color:#8a2a2a}
-.sessao{background:var(--azul);border-radius:24px;padding:16px;margin-bottom:24px}
+#sessoes{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.sessao{background:var(--azul);border-radius:24px;padding:16px}
+.box.estreito{max-width:900px;margin-left:auto;margin-right:auto}
 .sessao>.cab{color:#fff;margin:4px 6px 14px}
 .sessao>.cab h2{color:var(--amarelo);margin:0;font-size:32px}
-.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grade{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .filme{background:#fff;border-radius:18px;padding:10px;border:4px solid transparent;cursor:pointer;text-align:left;font-family:inherit;color:inherit;display:flex;flex-direction:column;gap:8px;position:relative;transition:transform .1s}
 .filme:hover{transform:translateY(-2px)}
 .filme:disabled{cursor:default;transform:none}
@@ -69,18 +71,21 @@ td.n{font-weight:800}
 .topo{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 #carregando{position:fixed;inset:0;background:rgba(37,38,63,.45);display:flex;align-items:center;justify-content:center;z-index:10}
 #carregando div{background:#fff;border-radius:18px;padding:18px 26px;font-weight:800;color:var(--azul)}
-@media(max-width:640px){.grade{grid-template-columns:repeat(2,1fr)}.podio{grid-template-columns:1fr}}
+@media(max-width:900px){#sessoes{grid-template-columns:1fr}}
+@media(max-width:640px){.podio{grid-template-columns:1fr}}
+.filme.atual{border-color:var(--ok)}
+.filme .selo{position:absolute;top:14px;left:14px;background:var(--ok);color:#fff;font-size:12px;font-weight:800;padding:4px 8px;border-radius:8px}
 </style>
 </head>
 <body>
 <header>
   <img class="logo" src="img/logo.png" alt="Logo do Festival Despertacular">
   <h1>CINE DESPERTACULAR</h1>
-  <p>Escolha o seu filme favorito · 30 e 31 de outubro</p>
+  <p>Escolha o seu filme favorito · votação até 31/10 às 22h</p>
 </header>
 <main>
 
-<section id="telaCpf" class="box">
+<section id="telaCpf" class="box estreito">
   <h2>Entrar para votar</h2>
   <div id="semApi" class="aviso fim hide" style="margin-bottom:10px">Votação ainda não configurada.</div>
   <label for="cpf">Digite seu CPF</label>
@@ -89,7 +94,7 @@ td.n{font-weight:800}
   <button class="btn full" onclick="entrar()">Continuar</button>
 </section>
 
-<section id="telaCad" class="box hide">
+<section id="telaCad" class="box estreito hide">
   <h2>Cadastro</h2>
   <label for="nome">Nome completo</label>
   <input id="nome" placeholder="Seu nome completo" autocomplete="off">
@@ -101,11 +106,11 @@ td.n{font-weight:800}
 </section>
 
 <section id="telaVoto" class="hide">
-  <div class="box" style="margin-bottom:20px">
-    <div id="faixaTeste" class="faixa hide">🧪 MODO TESTE · votação liberada fora do período. Este voto NÃO entra no resultado.<br>
+  <div class="box estreito" style="margin-bottom:20px">
+    <div id="faixaTeste" class="faixa hide">🧪 MODO TESTE · este voto NÃO entra no resultado.<br>
       <button class="btn sec" onclick="painel()">Voltar ao resultado</button></div>
     <div class="topo"><h2 id="ola" style="margin:0">Olá!</h2><button class="btn sec" onclick="sair()">Sair</button></div>
-    <p style="margin:12px 0 0">Toque no cartaz do <b>seu filme favorito</b> e depois em <b>Confirmar voto</b>. Cada CPF vota <b>uma vez só</b>, em um único filme.</p>
+    <p style="margin:12px 0 0">Toque no cartaz do <b>seu filme favorito</b> e depois em <b>Confirmar voto</b>. Cada CPF tem <b>um voto só</b>, mas você pode <b>trocar de filme</b> até <b>31/10 às 22h</b>. Vale o último voto.</p>
     <div id="periodo" class="aviso fim hide" style="margin-top:12px"></div>
   </div>
   <div id="sessoes"></div>
@@ -115,7 +120,7 @@ td.n{font-weight:800}
   </div>
 </section>
 
-<section id="telaFeito" class="box votado hide">
+<section id="telaFeito" class="box estreito votado hide">
   <div id="faixaTeste2" class="faixa hide">🧪 MODO TESTE<br>
     <button class="btn sec" onclick="limparTeste()">Apagar voto de teste</button>
     <button class="btn sec" onclick="painel()">Voltar ao resultado</button></div>
@@ -123,11 +128,12 @@ td.n{font-weight:800}
   <p id="feitoTexto"></p>
   <img id="feitoImg" alt="">
   <h3 id="feitoFilme"></h3>
-  <p>Obrigado por participar do Cine Despertacular!</p>
+  <p id="feitoTroca">Mudou de ideia? Você pode trocar de filme até 31/10 às 22h.</p>
+  <button class="btn sec full" id="btnTrocar" onclick="abrirVotacao()">🔄 Trocar voto</button>
   <button class="btn full" onclick="sair()">Concluir</button>
 </section>
 
-<section id="telaAdm" class="box hide">
+<section id="telaAdm" class="box estreito hide">
   <h2>Resultado · Prêmio do Público</h2>
   <div class="stats" id="stats"></div>
   <div class="podio" id="podio"></div>
@@ -153,7 +159,7 @@ td.n{font-weight:800}
 // Endereço do Apps Script publicado (Implantar > Nova implantação > App da Web)
 const API_URL = "https://script.google.com/macros/s/AKfycbxuV13GFzDg5XFbXsAoYNr8Zq8qPHxEDOQ7RP_w4gLiov6CWxQmwnt0zru1qxhHPJG-dQ/exec";
 
-const DIAS = ["2026-10-30","2026-10-31"];
+const ENCERRA = Date.parse("2026-10-31T22:00:00-03:00"); // fim da votação (Brasília)
 const FILMES = [
  {t:"Amei te Ver",d:"Ricardo Cioni Garcia",g:"Ficção",m:15,c:"L",s:14},
  {t:"O Milagre dos Sinais",d:"Amanda Gomes",g:"Drama",m:11,c:"12",s:14},
@@ -173,6 +179,7 @@ const COR = {L:"#1aa34a","10":"#1d7fd1","12":"#e6b800","14":"#e8761c"};
 
 let atual = null;      // {cpf, nome}
 let escolhido = null;  // filme selecionado, ainda não confirmado
+let meuVoto = null;    // voto já registrado deste CPF
 let modoTeste = false;
 let adminCpf = null;
 let offset = 0;        // diferença entre o relógio do servidor e o do aparelho
@@ -199,10 +206,7 @@ async function api(acao, dados){
 // período de votação, pelo relógio do servidor (Brasília)
 function situacao(){
   if(modoTeste) return "aberta";
-  const hoje = new Date(Date.now()+offset-3*3600e3).toISOString().slice(0,10);
-  if(hoje < DIAS[0]) return "antes";
-  if(hoje > DIAS[1]) return "encerrada";
-  return "aberta";
+  return Date.now()+offset >= ENCERRA ? "encerrada" : "aberta";
 }
 
 // ---------- utilidades ----------
@@ -227,8 +231,8 @@ async function entrar(){
   try{
     const r = await api("entrar",{cpf:c});
     if(r.admin){ adminCpf = c; painel(); return; }
-    atual = {cpf:c, nome:r.nome};
-    if(r.voto !== null && r.voto !== undefined){ telaFeito(r.voto, true); return; }
+    atual = {cpf:c, nome:r.nome}; meuVoto = r.voto ?? null;
+    if(meuVoto !== null){ telaFeito(meuVoto, true); return; }
     if(r.cadastrado){ abrirVotacao(); return; }
     document.getElementById("cpfCad").value = fmt(c);
     document.getElementById("nome").value = "";
@@ -243,19 +247,19 @@ async function cadastrar(){
   if(nome.split(" ").length<2 || nome.length<5){ err.textContent="Digite seu nome completo (nome e sobrenome)."; return; }
   try{
     const r = await api("cadastrar",{cpf:atual.cpf, nome});
-    atual.nome = r.nome;
-    if(r.voto !== null && r.voto !== undefined){ telaFeito(r.voto, true); return; }
+    atual.nome = r.nome; meuVoto = r.voto ?? null;
+    if(meuVoto !== null){ telaFeito(meuVoto, true); return; }
     abrirVotacao();
   }catch(e){ err.textContent = e.message; }
 }
 
 function abrirVotacao(){
-  escolhido = null;
+  escolhido = meuVoto;
   document.getElementById("faixaTeste").classList.toggle("hide",!modoTeste);
   document.getElementById("ola").textContent = "Olá, " + atual.nome.split(" ")[0] + "!";
   const st = situacao(), per = document.getElementById("periodo");
   per.classList.toggle("hide", st==="aberta");
-  per.textContent = st==="antes" ? "🔒 A votação abre no dia 30/10." : "⛔ A votação foi encerrada.";
+  per.textContent = "⛔ A votação foi encerrada.";
   document.getElementById("barra").classList.toggle("hide", st!=="aberta");
   montar();
   mostrar("telaVoto");
@@ -271,36 +275,46 @@ function montar(){
     FILMES.forEach((f,i)=>{
       if(f.s!==s) return;
       const b = document.createElement("button");
-      b.className = "filme" + (escolhido===i ? " sel" : "");
+      b.className = "filme" + (escolhido===i ? " sel" : "") + (meuVoto===i ? " atual" : "");
       b.disabled = !aberta;
       b.innerHTML = `<img src="${IMG(i)}" alt="" loading="lazy"><b></b><small><span class="tag" style="background:${COR[f.c]}">${f.c}</span>${f.g} · ${f.m} min</small><small class="dir"></small>`;
       b.querySelector("img").alt = "Cartaz de " + f.t;
       b.querySelector("b").textContent = f.t;
       b.querySelector(".dir").textContent = "Direção: " + f.d;
+      if(meuVoto===i) b.insertAdjacentHTML("beforeend",'<span class="selo">SEU VOTO</span>');
       b.onclick = ()=>{ escolhido = i; montar(); };
       G.appendChild(b);
     });
     S.appendChild(box);
   });
-  document.getElementById("selTxt").textContent = escolhido===null ? "Nenhum filme escolhido" : "Seu voto: " + FILMES[escolhido].t;
-  document.getElementById("btnVotar").disabled = escolhido===null;
+  const bv = document.getElementById("btnVotar");
+  bv.textContent = meuVoto===null ? "Confirmar voto" : "Trocar voto";
+  bv.disabled = escolhido===null || escolhido===meuVoto;
+  document.getElementById("selTxt").textContent = escolhido===null ? "Nenhum filme escolhido"
+    : escolhido===meuVoto ? "Seu voto atual: " + FILMES[escolhido].t + " · toque em outro cartaz para trocar"
+    : (meuVoto===null ? "Seu voto: " : "Trocar para: ") + FILMES[escolhido].t;
 }
 
 async function votar(){
   if(escolhido===null) return;
   const f = FILMES[escolhido];
-  if(!confirm(`Confirmar seu voto em "${f.t}"?\n\nCada CPF vota uma vez só. Depois não dá para mudar.`)) return;
+  const msg = meuVoto===null ? `Confirmar seu voto em "${f.t}"?` : `Trocar seu voto de "${FILMES[meuVoto].t}" para "${f.t}"?`;
+  if(!confirm(msg + "\n\nCada CPF tem um voto só. Vale o último, até 31/10 às 22h.")) return;
   try{
+    const troca = meuVoto!==null;
     const r = await api("votar",{cpf:atual.cpf, filme:escolhido, teste:modoTeste});
-    telaFeito(r.voto, false);
+    meuVoto = r.voto;
+    telaFeito(r.voto, false, troca);
   }catch(e){ alert(e.message); }
 }
 
-function telaFeito(i, jaTinha){
-  const f = FILMES[i];
+function telaFeito(i, jaTinha, troca){
+  const f = FILMES[i], aberta = situacao()==="aberta";
   document.getElementById("faixaTeste2").classList.toggle("hide",!modoTeste);
-  document.getElementById("feitoTitulo").textContent = jaTinha ? "Você já votou!" : "Voto registrado!";
-  document.getElementById("feitoTexto").textContent = jaTinha ? "Cada CPF vota uma vez só. Seu voto foi em:" : "Seu filme favorito é:";
+  document.getElementById("feitoTitulo").textContent = jaTinha ? "Você já votou!" : (troca ? "Voto trocado!" : "Voto registrado!");
+  document.getElementById("feitoTexto").textContent = jaTinha ? "Seu voto atual é:" : "Seu filme favorito é:";
+  document.getElementById("feitoTroca").textContent = aberta ? "Mudou de ideia? Você pode trocar de filme até 31/10 às 22h." : "A votação foi encerrada. Obrigado por participar!";
+  document.getElementById("btnTrocar").classList.toggle("hide", !aberta);
   document.getElementById("feitoImg").src = IMG(i);
   document.getElementById("feitoImg").alt = "Cartaz de " + f.t;
   document.getElementById("feitoFilme").textContent = f.t;
@@ -308,7 +322,7 @@ function telaFeito(i, jaTinha){
 }
 
 function sair(){
-  modoTeste=false; atual=null; adminCpf=null; escolhido=null;
+  modoTeste=false; atual=null; adminCpf=null; escolhido=null; meuVoto=null;
   inCpf.value=""; document.getElementById("erroCpf").textContent="";
   mostrar("telaCpf");
 }
@@ -345,13 +359,13 @@ async function painel(){
 async function iniciarTeste(){
   try{
     const r = await api("testeVoto",{cpf:adminCpf});
-    modoTeste = true; atual = {cpf:adminCpf, nome:"Teste Administrador"};
-    if(r.voto !== null && r.voto !== undefined) telaFeito(r.voto, true); else abrirVotacao();
+    modoTeste = true; atual = {cpf:adminCpf, nome:"Teste Administrador"}; meuVoto = r.voto ?? null;
+    if(meuVoto !== null) telaFeito(meuVoto, true); else abrirVotacao();
   }catch(e){ alert(e.message); }
 }
 
 async function limparTeste(){
-  try{ await api("limparTeste",{cpf:adminCpf}); abrirVotacao(); }catch(e){ alert(e.message); }
+  try{ await api("limparTeste",{cpf:adminCpf}); meuVoto = null; abrirVotacao(); }catch(e){ alert(e.message); }
 }
 </script>
 </body>
