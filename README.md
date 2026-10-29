@@ -2,8 +2,8 @@
 
 Página de votação do público para os curtas do Cine Despertacular (30 e 31 de outubro de 2026).
 
-- Notas de 0 a 5, uma vez por CPF em cada filme.
-- Cada filme libera ao fim da exibição (horário de Brasília); a Sessão das 14h fecha às 16h e a das 19h fecha às 21h.
+- Cada CPF vota uma única vez, escolhendo 1 filme favorito entre os 12 (Sessão das 14h e Sessão das 19h).
+- Votação aberta nos dias 30 e 31 de outubro (horário de Brasília, pelo relógio do servidor).
 - Os votos ficam numa planilha do Google, gravados por um Apps Script. As regras são conferidas no servidor.
 
 ## Configuração (uma vez)
@@ -23,6 +23,6 @@ Settings > Pages > Branch `main`, pasta `/ (root)` > Save.
 
 ## Administrador
 
-O CPF de administrador fica só no Apps Script (não aparece no site). Ao entrar com ele, a página mostra o resultado do Prêmio do Público e o botão de teste, que libera todos os filmes sem horário. Votos de teste vão para a aba Teste e não entram no resultado.
+O CPF de administrador fica só no Apps Script (não aparece no site). Ao entrar com ele, a página mostra o resultado do Prêmio do Público (votos e porcentagem por filme) e o botão de teste, que libera a votação fora do período. Votos de teste vão para a aba Teste e não entram no resultado.
 
 Se alterar o `Code.gs` depois de publicado, use **Implantar > Gerenciar implantações > Editar > Nova versão** para manter o mesmo link.

@@ -14,8 +14,7 @@ header{background:#5052a0;color:#fff;padding:18px 16px;text-align:center}
 header .logo{width:96px;height:96px;border-radius:24px;display:block;margin:0 auto 8px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
 header h1{font-family:Anton,sans-serif;font-weight:400;letter-spacing:1px;margin:0;font-size:clamp(28px,7vw,44px);color:var(--amarelo)}
 header p{margin:4px 0 0;opacity:.85}
-#relogio{display:inline-block;margin-top:8px;background:rgba(255,255,255,.15);padding:4px 12px;border-radius:20px;font-weight:600;font-size:14px}
-main{max-width:900px;margin:0 auto;padding:20px 16px 60px}
+main{max-width:900px;margin:0 auto;padding:20px 16px 110px}
 .box{background:#fff;border-radius:22px;padding:22px;box-shadow:0 8px 30px rgba(60,64,108,.15)}
 h2{font-family:Anton,sans-serif;font-weight:400;color:var(--azul);margin:0 0 14px;font-size:28px}
 label{display:block;font-weight:600;margin:14px 0 6px}
@@ -29,32 +28,36 @@ input:focus{outline:none;border-color:var(--roxo)}
 .btn.full{width:100%;margin-top:14px;display:block}
 .erro{color:#c0392b;font-weight:600;margin-top:10px;min-height:1.2em}
 .hide{display:none!important}
-.sessao{background:var(--azul);border-radius:24px;padding:16px;margin-bottom:24px}
-.sessao>.cab{display:flex;justify-content:space-between;align-items:center;color:#fff;margin:4px 6px 14px;gap:10px;flex-wrap:wrap}
-.sessao>.cab h2{color:var(--amarelo);margin:0;font-size:32px}
-.sessao>.cab span{font-size:14px;opacity:.9}
-.filme{display:grid;grid-template-columns:120px 1fr;gap:14px;background:#fff;border-radius:18px;padding:14px;margin-bottom:12px;border:3px solid transparent}
-.filme:last-child{margin-bottom:0}
-.filme.votado{border-color:var(--ok)}
-.filme.bloq img{filter:grayscale(1);opacity:.55}
-.filme img{width:120px;border-radius:12px;display:block}
-.filme h3{margin:0;font-family:Anton,sans-serif;font-weight:400;font-size:23px;color:var(--azul)}
-.meta{font-size:14px;margin:4px 0 10px;opacity:.8}
-.tag{display:inline-block;font-weight:800;border-radius:6px;padding:1px 7px;color:#fff;font-size:13px;margin-right:6px}
-.notas{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.notas button.n{width:48px;height:48px;border-radius:12px;border:2px solid #d6d3e4;background:#fff;font-weight:800;font-size:20px;cursor:pointer;font-family:inherit;color:var(--txt)}
-.notas button.n.sel{background:var(--roxo);border-color:var(--roxo);color:#fff;transform:scale(1.08)}
-.notas .btn{padding:12px 16px;font-size:16px}
 .aviso{display:inline-flex;align-items:center;gap:8px;background:#f3f1fa;color:var(--azul2);border-radius:12px;padding:10px 14px;font-weight:600;font-size:15px}
-.aviso.ok{background:#e3f6ea;color:#11743a}
 .aviso.fim{background:#f4e3e3;color:#8a2a2a}
+.sessao{background:var(--azul);border-radius:24px;padding:16px;margin-bottom:24px}
+.sessao>.cab{color:#fff;margin:4px 6px 14px}
+.sessao>.cab h2{color:var(--amarelo);margin:0;font-size:32px}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.filme{background:#fff;border-radius:18px;padding:10px;border:4px solid transparent;cursor:pointer;text-align:left;font-family:inherit;color:inherit;display:flex;flex-direction:column;gap:8px;position:relative;transition:transform .1s}
+.filme:hover{transform:translateY(-2px)}
+.filme:disabled{cursor:default;transform:none}
+.filme.sel{border-color:var(--roxo);box-shadow:0 0 0 4px rgba(138,91,192,.35)}
+.filme.sel::after{content:"✓";position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;background:var(--roxo);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.filme img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:12px;display:block}
+.filme b{font-family:Anton,sans-serif;font-weight:400;font-size:19px;color:var(--azul);line-height:1.15}
+.filme small{font-size:13px;opacity:.75}
+.tag{display:inline-block;font-weight:800;border-radius:6px;padding:1px 6px;color:#fff;font-size:12px;margin-right:4px}
+.barra{position:fixed;left:0;right:0;bottom:0;background:var(--azul2);color:#fff;padding:12px 16px;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 -6px 20px rgba(0,0,0,.2);z-index:5}
+.barra .btn{background:var(--amarelo);color:var(--azul2)}
+.barra .btn:disabled{background:#6b6e97;color:#c9c8da}
 .faixa{background:#e8761c;color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;margin-bottom:14px}
 .faixa .btn{padding:8px 12px;font-size:14px;margin:8px 6px 0 0}
+.votado{text-align:center}
+.votado img{width:200px;max-width:70%;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.2);margin:10px 0}
+.votado h3{font-family:Anton,sans-serif;font-weight:400;font-size:28px;color:var(--azul);margin:6px 0}
 table{width:100%;border-collapse:collapse;margin-top:10px}
 th,td{padding:10px 8px;text-align:left;border-bottom:1px solid #eee;font-size:15px}
 th{background:#f3f1fa;color:var(--azul)}
 td.n,th.n{text-align:center}
 td.n{font-weight:800}
+.bar{height:10px;background:#eceaf5;border-radius:6px;overflow:hidden;min-width:60px}
+.bar span{display:block;height:100%;background:var(--roxo)}
 .podio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0 20px}
 .podio div{background:var(--amarelo);border-radius:16px;padding:14px;text-align:center}
 .podio .p1{background:linear-gradient(135deg,#ffd75e,#f6b52b)}
@@ -66,15 +69,14 @@ td.n{font-weight:800}
 .topo{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 #carregando{position:fixed;inset:0;background:rgba(37,38,63,.45);display:flex;align-items:center;justify-content:center;z-index:10}
 #carregando div{background:#fff;border-radius:18px;padding:18px 26px;font-weight:800;color:var(--azul)}
-@media(max-width:560px){.filme{grid-template-columns:84px 1fr}.filme img{width:84px}.notas button.n{width:42px;height:42px;font-size:18px}.podio{grid-template-columns:1fr}}
+@media(max-width:640px){.grade{grid-template-columns:repeat(2,1fr)}.podio{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
   <img class="logo" src="img/logo.png" alt="Logo do Festival Despertacular">
   <h1>CINE DESPERTACULAR</h1>
-  <p>Vote nos filmes de 0 a 5 · 30 e 31 de outubro</p>
-  <div id="relogio"></div>
+  <p>Escolha o seu filme favorito · 30 e 31 de outubro</p>
 </header>
 <main>
 
@@ -100,13 +102,29 @@ td.n{font-weight:800}
 
 <section id="telaVoto" class="hide">
   <div class="box" style="margin-bottom:20px">
-    <div id="faixaTeste" class="faixa hide">🧪 MODO TESTE · todos os filmes liberados, sem horário. Estes votos NÃO entram no resultado.<br>
-      <button class="btn sec" onclick="limparTeste()">Limpar votos de teste</button>
+    <div id="faixaTeste" class="faixa hide">🧪 MODO TESTE · votação liberada fora do período. Este voto NÃO entra no resultado.<br>
       <button class="btn sec" onclick="painel()">Voltar ao resultado</button></div>
     <div class="topo"><h2 id="ola" style="margin:0">Olá!</h2><button class="btn sec" onclick="sair()">Sair</button></div>
-    <p style="margin:12px 0 0">Cada filme libera para votação <b>depois que termina a exibição</b>. Dê uma nota de <b>0 a 5</b> e toque em <b>Confirmar</b>. Cada CPF vota uma única vez em cada filme.</p>
+    <p style="margin:12px 0 0">Toque no cartaz do <b>seu filme favorito</b> e depois em <b>Confirmar voto</b>. Cada CPF vota <b>uma vez só</b>, em um único filme.</p>
+    <div id="periodo" class="aviso fim hide" style="margin-top:12px"></div>
   </div>
   <div id="sessoes"></div>
+  <div class="barra" id="barra">
+    <span id="selTxt">Nenhum filme escolhido</span>
+    <button class="btn" id="btnVotar" onclick="votar()" disabled>Confirmar voto</button>
+  </div>
+</section>
+
+<section id="telaFeito" class="box votado hide">
+  <div id="faixaTeste2" class="faixa hide">🧪 MODO TESTE<br>
+    <button class="btn sec" onclick="limparTeste()">Apagar voto de teste</button>
+    <button class="btn sec" onclick="painel()">Voltar ao resultado</button></div>
+  <h2 id="feitoTitulo">Voto registrado!</h2>
+  <p id="feitoTexto"></p>
+  <img id="feitoImg" alt="">
+  <h3 id="feitoFilme"></h3>
+  <p>Obrigado por participar do Cine Despertacular!</p>
+  <button class="btn full" onclick="sair()">Concluir</button>
 </section>
 
 <section id="telaAdm" class="box hide">
@@ -114,16 +132,16 @@ td.n{font-weight:800}
   <div class="stats" id="stats"></div>
   <div class="podio" id="podio"></div>
   <table>
-    <thead><tr><th>#</th><th>Filme</th><th>Sessão</th><th class="n">Média</th><th class="n">Votos</th><th class="n">Soma</th></tr></thead>
+    <thead><tr><th>#</th><th>Filme</th><th>Sessão</th><th class="n">Votos</th><th class="n">%</th><th></th></tr></thead>
     <tbody id="tabela"></tbody>
   </table>
   <h2 style="margin-top:28px">Votantes</h2>
   <table>
-    <thead><tr><th>Nome</th><th>CPF</th><th>Cadastro</th><th class="n">Filmes votados</th></tr></thead>
+    <thead><tr><th>Nome</th><th>CPF</th><th>Cadastro</th><th>Votou em</th></tr></thead>
     <tbody id="votantes"></tbody>
   </table>
   <button class="btn full" onclick="painel()">🔄 Atualizar resultado</button>
-  <button class="btn lar full" onclick="iniciarTeste()">🧪 Testar votação (tudo liberado)</button>
+  <button class="btn lar full" onclick="iniciarTeste()">🧪 Testar votação</button>
   <a class="btn full" id="linkPlanilha" target="_blank" rel="noopener">📊 Abrir planilha</a>
   <button class="btn sec full" onclick="sair()">Sair</button>
 </section>
@@ -136,27 +154,25 @@ td.n{font-weight:800}
 const API_URL = "https://script.google.com/macros/s/AKfycbxuV13GFzDg5XFbXsAoYNr8Zq8qPHxEDOQ7RP_w4gLiov6CWxQmwnt0zru1qxhHPJG-dQ/exec";
 
 const DIAS = ["2026-10-30","2026-10-31"];
-const FECHA = {14:"16:00", 19:"21:00"};
 const FILMES = [
- {t:"Amei te Ver",d:"Ricardo Cioni Garcia",g:"Ficção",m:15,c:"L",h:"14h00",fim:"14:15",s:14},
- {t:"O Milagre dos Sinais",d:"Amanda Gomes",g:"Drama",m:11,c:"12",h:"14h15",fim:"14:26",s:14},
- {t:"A Chuva é Importante! Em Libras",d:"Lucas Ramon",g:"Animação",m:10,c:"L",h:"14h26",fim:"14:36",s:14},
- {t:"O Tempo",d:"Pablo Alves",g:"Suspense",m:7,c:"12",h:"14h36",fim:"14:43",s:14},
- {t:"A Dor Invisível",d:"Lourraynny Lima",g:"Documentário",m:14,c:"12",h:"14h43",fim:"14:57",s:14},
- {t:"Mãos Rapper",d:"Giuliano Robert",g:"Documentário",m:17,c:"L",h:"14h57",fim:"15:14",s:14},
- {t:"Desperta!",d:"Gabriel Isaac",g:"Suspense",m:6,c:"L",h:"19h00",fim:"19:06",s:19},
- {t:"Há Sinais",d:"Edier William",g:"Drama",m:15,c:"14",h:"19h06",fim:"19:21",s:19},
- {t:"Justiça Silenciosa",d:"Lêo Russo",g:"Ficção",m:20,c:"L",h:"19h21",fim:"19:41",s:19},
- {t:"Entre Sinais e Marés",d:"João Gabriel Ferreira e João Gabriel Kowalski",g:"Ficção",m:16,c:"10",h:"19h41",fim:"19:57",s:19},
- {t:"Nunca Me Viram Gritar",d:"Luccas Araújo e Danilo Teixeira",g:"Drama",m:16,c:"L",h:"19h57",fim:"20:13",s:19},
- {t:"Não Alimente os Cães",d:"Vini Poff",g:"Drama",m:24,c:"10",h:"20h13",fim:"20:37",s:19}
+ {t:"Amei te Ver",d:"Ricardo Cioni Garcia",g:"Ficção",m:15,c:"L",s:14},
+ {t:"O Milagre dos Sinais",d:"Amanda Gomes",g:"Drama",m:11,c:"12",s:14},
+ {t:"A Chuva é Importante! Em Libras",d:"Lucas Ramon",g:"Animação",m:10,c:"L",s:14},
+ {t:"O Tempo",d:"Pablo Alves",g:"Suspense",m:7,c:"12",s:14},
+ {t:"A Dor Invisível",d:"Lourraynny Lima",g:"Documentário",m:14,c:"12",s:14},
+ {t:"Mãos Rapper",d:"Giuliano Robert",g:"Documentário",m:17,c:"L",s:14},
+ {t:"Desperta!",d:"Gabriel Isaac",g:"Suspense",m:6,c:"L",s:19},
+ {t:"Há Sinais",d:"Edier William",g:"Drama",m:15,c:"14",s:19},
+ {t:"Justiça Silenciosa",d:"Lêo Russo",g:"Ficção",m:20,c:"L",s:19},
+ {t:"Entre Sinais e Marés",d:"João Gabriel Ferreira e João Gabriel Kowalski",g:"Ficção",m:16,c:"10",s:19},
+ {t:"Nunca Me Viram Gritar",d:"Luccas Araújo e Danilo Teixeira",g:"Drama",m:16,c:"L",s:19},
+ {t:"Não Alimente os Cães",d:"Vini Poff",g:"Drama",m:24,c:"10",s:19}
 ];
 const IMG = i => "img/filme" + String(i+1).padStart(2,"0") + ".jpg";
 const COR = {L:"#1aa34a","10":"#1d7fd1","12":"#e6b800","14":"#e8761c"};
 
 let atual = null;      // {cpf, nome}
-let meus = {};         // votos do CPF atual: {idFilme: nota}
-let escolha = {};      // nota selecionada ainda não confirmada
+let escolhido = null;  // filme selecionado, ainda não confirmado
 let modoTeste = false;
 let adminCpf = null;
 let offset = 0;        // diferença entre o relógio do servidor e o do aparelho
@@ -180,39 +196,19 @@ async function api(acao, dados){
   }finally{ ld.classList.add("hide"); }
 }
 
-// ---------- horário de Brasília (relógio do servidor) ----------
-const agora = () => Date.now() + offset;
-const ts = (dia,hm) => Date.parse(dia+"T"+hm+":00-03:00");
-const hojeBsb = () => new Date(agora()-3*3600e3).toISOString().slice(0,10);
-
-function estado(f){
-  if(modoTeste) return {pode:true};
-  const t = agora(), hoje = hojeBsb(), hm = f.fim.replace(":","h");
-  if(hoje < DIAS[0]) return {pode:false, tipo:"esp", txt:"Libera em 30/10 às "+hm};
-  if(hoje > DIAS[1]) return {pode:false, tipo:"fim", txt:"Votação encerrada"};
-  const fh = FECHA[f.s].replace(":","h");
-  if(t >= ts(hoje,FECHA[f.s])){
-    if(hoje===DIAS[0]) return {pode:false, tipo:"fim", txt:"Votação encerrada às "+fh+" · reabre 31/10 às "+hm};
-    return {pode:false, tipo:"fim", txt:"Votação encerrada"};
-  }
-  if(t >= ts(hoje,f.fim)) return {pode:true};
-  return {pode:false, tipo:"esp", txt:"Libera hoje às "+hm+", ao fim do filme"};
-}
-
-function relogio(){
-  const s = new Date(agora()-3*3600e3).toISOString();
-  document.getElementById("relogio").textContent = "Horário de Brasília: "+s.slice(8,10)+"/"+s.slice(5,7)+" · "+s.slice(11,16).replace(":","h");
+// período de votação, pelo relógio do servidor (Brasília)
+function situacao(){
+  if(modoTeste) return "aberta";
+  const hoje = new Date(Date.now()+offset-3*3600e3).toISOString().slice(0,10);
+  if(hoje < DIAS[0]) return "antes";
+  if(hoje > DIAS[1]) return "encerrada";
+  return "aberta";
 }
 
 // ---------- utilidades ----------
 const so = s => s.replace(/\D/g,"");
 const fmt = c => c.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4");
-function mostrar(id){ ["telaCpf","telaCad","telaVoto","telaAdm"].forEach(t=>document.getElementById(t).classList.toggle("hide",t!==id)); scrollTo(0,0); }
-function cpfValido(c){
-  if(c.length!==11 || /^(\d)\1+$/.test(c)) return false;
-  for(let t=9;t<11;t++){ let s=0; for(let i=0;i<t;i++) s+=+c[i]*(t+1-i); if(((s*10)%11)%10 !== +c[t]) return false; }
-  return true;
-}
+function mostrar(id){ ["telaCpf","telaCad","telaVoto","telaFeito","telaAdm"].forEach(t=>document.getElementById(t).classList.toggle("hide",t!==id)); scrollTo(0,0); }
 
 const inCpf = document.getElementById("cpf");
 inCpf.addEventListener("input",()=>{
@@ -231,7 +227,8 @@ async function entrar(){
   try{
     const r = await api("entrar",{cpf:c});
     if(r.admin){ adminCpf = c; painel(); return; }
-    atual = {cpf:c, nome:r.nome}; meus = r.votos || {};
+    atual = {cpf:c, nome:r.nome};
+    if(r.voto !== null && r.voto !== undefined){ telaFeito(r.voto, true); return; }
     if(r.cadastrado){ abrirVotacao(); return; }
     document.getElementById("cpfCad").value = fmt(c);
     document.getElementById("nome").value = "";
@@ -246,76 +243,72 @@ async function cadastrar(){
   if(nome.split(" ").length<2 || nome.length<5){ err.textContent="Digite seu nome completo (nome e sobrenome)."; return; }
   try{
     const r = await api("cadastrar",{cpf:atual.cpf, nome});
-    atual.nome = r.nome; meus = r.votos || {};
+    atual.nome = r.nome;
+    if(r.voto !== null && r.voto !== undefined){ telaFeito(r.voto, true); return; }
     abrirVotacao();
   }catch(e){ err.textContent = e.message; }
 }
 
 function abrirVotacao(){
-  escolha = {};
+  escolhido = null;
   document.getElementById("faixaTeste").classList.toggle("hide",!modoTeste);
   document.getElementById("ola").textContent = "Olá, " + atual.nome.split(" ")[0] + "!";
+  const st = situacao(), per = document.getElementById("periodo");
+  per.classList.toggle("hide", st==="aberta");
+  per.textContent = st==="antes" ? "🔒 A votação abre no dia 30/10." : "⛔ A votação foi encerrada.";
+  document.getElementById("barra").classList.toggle("hide", st!=="aberta");
   montar();
   mostrar("telaVoto");
 }
 
 function montar(){
-  if(!atual) return;
+  const aberta = situacao()==="aberta";
   const S = document.getElementById("sessoes"); S.innerHTML = "";
   [14,19].forEach(s=>{
-    const lista = FILMES.map((f,i)=>({f,i})).filter(x=>x.f.s===s);
-    const feitos = lista.filter(x=>meus[x.i]!==undefined).length;
     const box = document.createElement("div"); box.className="sessao";
-    box.innerHTML = `<div class="cab"><h2>SESSÃO DAS ${s}H</h2><span>${lista.length} filmes · votação até ${FECHA[s].replace(":","h")} · ${feitos} votado${feitos===1?"":"s"}</span></div>`;
-    lista.forEach(({f,i})=>{
-      const st = estado(f), v = meus[i];
-      const card = document.createElement("div");
-      card.className = "filme" + (v!==undefined ? " votado" : (!st.pode ? " bloq" : ""));
-      card.innerHTML = `<img src="${IMG(i)}" alt="" loading="lazy">
-        <div><h3></h3>
-        <div class="meta"><span class="tag" style="background:${COR[f.c]}">${f.c}</span>${f.g} · ${f.m} min · ${f.h} às ${f.fim.replace(":","h")}<br>Direção: <span class="dir"></span></div>
-        <div class="notas"></div></div>`;
-      card.querySelector("img").alt = "Cartaz de " + f.t;
-      card.querySelector("h3").textContent = f.t;
-      card.querySelector(".dir").textContent = f.d;
-      const N = card.querySelector(".notas");
-      if(v!==undefined){
-        N.innerHTML = `<span class="aviso ok">✓ Você deu nota ${v} para este filme</span>`;
-      } else if(!st.pode){
-        N.innerHTML = `<span class="aviso ${st.tipo==="fim"?"fim":""}">${st.tipo==="fim"?"⛔":"🔒"} ${st.txt}</span>`;
-      } else {
-        const ok=document.createElement("button");
-        for(let n=0;n<=5;n++){
-          const b=document.createElement("button"); b.className="n"; b.textContent=n;
-          if(escolha[i]===n) b.classList.add("sel");
-          b.onclick=()=>{ escolha[i]=n; N.querySelectorAll("button.n").forEach((x,k)=>x.classList.toggle("sel",k===n)); ok.disabled=false; };
-          N.appendChild(b);
-        }
-        ok.className="btn"; ok.textContent="Confirmar";
-        ok.disabled = escolha[i]===undefined;
-        ok.onclick=()=>votar(i);
-        N.appendChild(ok);
-      }
-      box.appendChild(card);
+    box.innerHTML = `<div class="cab"><h2>SESSÃO DAS ${s}H</h2></div><div class="grade"></div>`;
+    const G = box.querySelector(".grade");
+    FILMES.forEach((f,i)=>{
+      if(f.s!==s) return;
+      const b = document.createElement("button");
+      b.className = "filme" + (escolhido===i ? " sel" : "");
+      b.disabled = !aberta;
+      b.innerHTML = `<img src="${IMG(i)}" alt="" loading="lazy"><b></b><small><span class="tag" style="background:${COR[f.c]}">${f.c}</span>${f.g} · ${f.m} min</small><small class="dir"></small>`;
+      b.querySelector("img").alt = "Cartaz de " + f.t;
+      b.querySelector("b").textContent = f.t;
+      b.querySelector(".dir").textContent = "Direção: " + f.d;
+      b.onclick = ()=>{ escolhido = i; montar(); };
+      G.appendChild(b);
     });
     S.appendChild(box);
   });
+  document.getElementById("selTxt").textContent = escolhido===null ? "Nenhum filme escolhido" : "Seu voto: " + FILMES[escolhido].t;
+  document.getElementById("btnVotar").disabled = escolhido===null;
 }
 
-async function votar(i){
-  const n = escolha[i], f = FILMES[i];
-  if(n===undefined) return;
-  if(!estado(f).pode){ alert("A votação deste filme não está liberada agora."); montar(); return; }
-  if(!confirm(`Confirmar nota ${n} para "${f.t}"?\nDepois de confirmado não dá para mudar.`)) return;
+async function votar(){
+  if(escolhido===null) return;
+  const f = FILMES[escolhido];
+  if(!confirm(`Confirmar seu voto em "${f.t}"?\n\nCada CPF vota uma vez só. Depois não dá para mudar.`)) return;
   try{
-    const r = await api("votar",{cpf:atual.cpf, filme:i, nota:n, teste:modoTeste});
-    meus = r.votos; delete escolha[i];
+    const r = await api("votar",{cpf:atual.cpf, filme:escolhido, teste:modoTeste});
+    telaFeito(r.voto, false);
   }catch(e){ alert(e.message); }
-  montar();
+}
+
+function telaFeito(i, jaTinha){
+  const f = FILMES[i];
+  document.getElementById("faixaTeste2").classList.toggle("hide",!modoTeste);
+  document.getElementById("feitoTitulo").textContent = jaTinha ? "Você já votou!" : "Voto registrado!";
+  document.getElementById("feitoTexto").textContent = jaTinha ? "Cada CPF vota uma vez só. Seu voto foi em:" : "Seu filme favorito é:";
+  document.getElementById("feitoImg").src = IMG(i);
+  document.getElementById("feitoImg").alt = "Cartaz de " + f.t;
+  document.getElementById("feitoFilme").textContent = f.t;
+  mostrar("telaFeito");
 }
 
 function sair(){
-  modoTeste=false; atual=null; adminCpf=null; meus={}; escolha={};
+  modoTeste=false; atual=null; adminCpf=null; escolhido=null;
   inCpf.value=""; document.getElementById("erroCpf").textContent="";
   mostrar("telaCpf");
 }
@@ -325,24 +318,25 @@ async function painel(){
   modoTeste=false; atual=null;
   let r;
   try{ r = await api("resultado",{cpf:adminCpf}); }catch(e){ alert(e.message); sair(); return; }
-  const lista = r.filmes.map(x=>({...x, f:FILMES[x.i], media:x.votos?x.soma/x.votos:0}))
-    .sort((a,b)=>b.media-a.media || b.votos-a.votos || b.soma-a.soma);
-  const tot = lista.reduce((s,x)=>s+x.votos,0);
+  const tot = r.filmes.reduce((s,x)=>s+x.votos,0);
+  const lista = r.filmes.map(x=>({...x, f:FILMES[x.i], pct: tot ? x.votos*100/tot : 0})).sort((a,b)=>b.votos-a.votos || a.i-b.i);
   document.getElementById("stats").innerHTML =
-    `<div><strong>${r.votantes.length}</strong>cadastrados</div><div><strong>${tot}</strong>votos dados</div><div><strong>${tot?lista[0].media.toFixed(2):"-"}</strong>maior média (0 a 5)</div>`;
+    `<div><strong>${r.votantes.length}</strong>cadastrados</div><div><strong>${tot}</strong>votos</div><div><strong>${tot?lista[0].votos:"-"}</strong>votos do 1º lugar</div>`;
   const pod = document.getElementById("podio"); pod.innerHTML="";
   if(tot) ["🥇 1º lugar","🥈 2º lugar","🥉 3º lugar"].forEach((lab,k)=>{ const x=lista[k]; if(!x||!x.votos) return;
     const d=document.createElement("div"); if(k===0) d.className="p1";
-    d.innerHTML=`<div>${lab}</div><img src="${IMG(x.i)}" alt=""><b></b>Média ${x.media.toFixed(2)} · ${x.votos} voto${x.votos===1?"":"s"}`;
+    d.innerHTML=`<div>${lab}</div><img src="${IMG(x.i)}" alt=""><b></b>${x.votos} voto${x.votos===1?"":"s"} · ${x.pct.toFixed(1)}%`;
     d.querySelector("b").textContent=x.f.t; pod.appendChild(d); });
   const T = document.getElementById("tabela"); T.innerHTML="";
   lista.forEach((x,k)=>{ const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${k+1}</td><td></td><td>${x.f.s}h</td><td class="n">${x.votos?x.media.toFixed(2):"-"}</td><td class="n">${x.votos}</td><td class="n">${x.soma}</td>`;
+    tr.innerHTML=`<td>${k+1}</td><td></td><td>${x.f.s}h</td><td class="n">${x.votos}</td><td class="n">${x.pct.toFixed(1)}%</td><td><div class="bar"><span style="width:${x.pct}%"></span></div></td>`;
     tr.children[1].textContent=x.f.t; T.appendChild(tr); });
   const V = document.getElementById("votantes"); V.innerHTML="";
   r.votantes.slice().reverse().forEach(u=>{ const tr=document.createElement("tr");
-    tr.innerHTML=`<td></td><td></td><td></td><td class="n">${u.qtd}</td>`;
-    tr.children[0].textContent=u.nome; tr.children[1].textContent=u.cpf; tr.children[2].textContent=u.data; V.appendChild(tr); });
+    tr.innerHTML=`<td></td><td></td><td></td><td></td>`;
+    tr.children[0].textContent=u.nome; tr.children[1].textContent=u.cpf; tr.children[2].textContent=u.data;
+    tr.children[3].textContent = u.filme===null ? "ainda não votou" : FILMES[u.filme].t;
+    V.appendChild(tr); });
   if(!r.votantes.length) V.innerHTML='<tr><td colspan="4">Nenhum cadastro ainda.</td></tr>';
   document.getElementById("linkPlanilha").href = r.planilha;
   mostrar("telaAdm");
@@ -350,19 +344,15 @@ async function painel(){
 
 async function iniciarTeste(){
   try{
-    const r = await api("testeVotos",{cpf:adminCpf});
-    modoTeste = true; atual = {cpf:adminCpf, nome:"Teste Administrador"}; meus = r.votos || {};
-    abrirVotacao();
+    const r = await api("testeVoto",{cpf:adminCpf});
+    modoTeste = true; atual = {cpf:adminCpf, nome:"Teste Administrador"};
+    if(r.voto !== null && r.voto !== undefined) telaFeito(r.voto, true); else abrirVotacao();
   }catch(e){ alert(e.message); }
 }
 
 async function limparTeste(){
-  if(!confirm("Apagar os votos de teste?")) return;
-  try{ const r = await api("limparTeste",{cpf:adminCpf}); meus = r.votos; escolha = {}; montar(); }catch(e){ alert(e.message); }
+  try{ await api("limparTeste",{cpf:adminCpf}); abrirVotacao(); }catch(e){ alert(e.message); }
 }
-
-relogio();
-setInterval(()=>{ relogio(); if(!document.getElementById("telaVoto").classList.contains("hide") && !document.querySelector(".notas button.n.sel")) montar(); }, 30000);
 </script>
 </body>
 </html>
