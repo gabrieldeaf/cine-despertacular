@@ -3,7 +3,7 @@
 Página de votação do público para os curtas do Cine Despertacular (30 e 31 de outubro de 2026).
 
 - Cada CPF tem um voto: 1 filme favorito entre os 12 (Sessão das 14h e Sessão das 19h). Pode trocar de filme; vale o último.
-- Votação aberta até 31/10/2026 às 22h (horário de Brasília, pelo relógio do servidor).
+- Votação aberta até 01/11/2026 às 16h (horário de Brasília, pelo relógio do servidor).
 - O voto só é aceito com o celular dentro do Espaço Cultural Renato Russo (raio de 300 m, pela localização do aparelho). Para outro local, mude `LOCAL` no `Code.gs` e no `index.html`.
 - Para um novo evento, mude a data de `ENCERRA` nos dois arquivos.
 - Os votos ficam numa planilha do Google, gravados por um Apps Script. As regras são conferidas no servidor.

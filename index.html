@@ -82,7 +82,7 @@ td.n{font-weight:800}
 <header>
   <img class="logo" src="img/logo.png" alt="Logo do Festival Despertacular">
   <h1>CINE DESPERTACULAR</h1>
-  <p>Escolha o seu filme favorito · votação até 31/10 às 22h</p>
+  <p>Escolha o seu filme favorito · votação até 01/11 às 16h</p>
 </header>
 <main>
 
@@ -111,7 +111,7 @@ td.n{font-weight:800}
     <div id="faixaTeste" class="faixa hide">🧪 MODO TESTE · este voto NÃO entra no resultado.<br>
       <button class="btn sec" onclick="painel()">Voltar ao resultado</button></div>
     <div class="topo"><h2 id="ola" style="margin:0">Olá!</h2><button class="btn sec" onclick="sair()">Sair</button></div>
-    <p style="margin:12px 0 0">Para votar você precisa estar <b>no Espaço Cultural Renato Russo</b> com a <b>localização do celular ativada</b>. Toque no cartaz do <b>seu filme favorito</b> e depois em <b>Confirmar voto</b>. Cada CPF tem <b>um voto só</b>, mas você pode <b>trocar de filme</b> até <b>31/10 às 22h</b>. Vale o último voto.</p>
+    <p style="margin:12px 0 0">Para votar você precisa estar <b>no Espaço Cultural Renato Russo</b> com a <b>localização do celular ativada</b>. Toque no cartaz do <b>seu filme favorito</b> e depois em <b>Confirmar voto</b>. Cada CPF tem <b>um voto só</b>, mas você pode <b>trocar de filme</b> até <b>01/11 às 16h</b>. Vale o último voto.</p>
     <div id="periodo" class="aviso fim hide" style="margin-top:12px"></div>
     <div id="localBox" style="margin-top:12px">
       <div id="localStatus" class="aviso">📍 Para votar, você precisa estar no Espaço Cultural Renato Russo com a localização do celular ativada.</div>
@@ -133,7 +133,7 @@ td.n{font-weight:800}
   <p id="feitoTexto"></p>
   <img id="feitoImg" alt="">
   <h3 id="feitoFilme"></h3>
-  <p id="feitoTroca">Mudou de ideia? Você pode trocar de filme até 31/10 às 22h.</p>
+  <p id="feitoTroca">Mudou de ideia? Você pode trocar de filme até 01/11 às 16h.</p>
   <button class="btn sec full" id="btnTrocar" onclick="abrirVotacao()">🔄 Trocar voto</button>
   <button class="btn full" onclick="sair()">Concluir</button>
 </section>
@@ -164,7 +164,7 @@ td.n{font-weight:800}
 // Endereço do Apps Script publicado (Implantar > Nova implantação > App da Web)
 const API_URL = "https://script.google.com/macros/s/AKfycbxuV13GFzDg5XFbXsAoYNr8Zq8qPHxEDOQ7RP_w4gLiov6CWxQmwnt0zru1qxhHPJG-dQ/exec";
 
-const ENCERRA = Date.parse("2026-10-31T22:00:00-03:00"); // fim da votação (Brasília)
+const ENCERRA = Date.parse("2026-11-01T16:00:00-03:00"); // fim da votação (Brasília)
 // Local onde o voto é aceito (o servidor confere de novo)
 const LOCAL = {nome:"Espaço Cultural Renato Russo", lat:-15.8126254, lng:-47.9059059, raio:300};
 const MARGEM_GPS = 100;
@@ -344,7 +344,7 @@ async function votar(){
   if(escolhido===null) return;
   const f = FILMES[escolhido];
   const msg = meuVoto===null ? `Confirmar seu voto em "${f.t}"?` : `Trocar seu voto de "${FILMES[meuVoto].t}" para "${f.t}"?`;
-  if(!confirm(msg + "\n\nCada CPF tem um voto só. Vale o último, até 31/10 às 22h.")) return;
+  if(!confirm(msg + "\n\nCada CPF tem um voto só. Vale o último, até 01/11 às 16h.")) return;
   const p = await verificarLocal();
   if(!p && !modoTeste){ alert(document.getElementById("localStatus").textContent.replace("⚠️ ","")); return; }
   if(p && !avaliarLocal(p).dentro && !modoTeste){ alert("Você está fora do "+LOCAL.nome+". O voto só é aceito dentro do local do evento."); return; }
@@ -361,7 +361,7 @@ function telaFeito(i, jaTinha, troca){
   document.getElementById("faixaTeste2").classList.toggle("hide",!modoTeste);
   document.getElementById("feitoTitulo").textContent = jaTinha ? "Você já votou!" : (troca ? "Voto trocado!" : "Voto registrado!");
   document.getElementById("feitoTexto").textContent = jaTinha ? "Seu voto atual é:" : "Seu filme favorito é:";
-  document.getElementById("feitoTroca").textContent = aberta ? "Mudou de ideia? Você pode trocar de filme até 31/10 às 22h." : "A votação foi encerrada. Obrigado por participar!";
+  document.getElementById("feitoTroca").textContent = aberta ? "Mudou de ideia? Você pode trocar de filme até 01/11 às 16h." : "A votação foi encerrada. Obrigado por participar!";
   document.getElementById("btnTrocar").classList.toggle("hide", !aberta);
   document.getElementById("feitoImg").src = IMG(i);
   document.getElementById("feitoImg").alt = "Cartaz de " + f.t;

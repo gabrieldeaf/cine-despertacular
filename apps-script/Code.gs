@@ -9,7 +9,7 @@
 const ADMIN_CPF = '52766438220';
 
 const FUSO = 'America/Sao_Paulo';
-const ENCERRA = '2026-10-31T22:00:00-03:00'; // fim da votação (Brasília). Mude aqui para um novo evento.
+const ENCERRA = '2026-11-01T16:00:00-03:00'; // fim da votação (Brasília). Mude aqui para um novo evento.
 
 // Local onde o voto é aceito
 const LOCAL = { nome: 'Espaço Cultural Renato Russo', lat: -15.8126254, lng: -47.9059059, raio: 300 }; // raio em metros
