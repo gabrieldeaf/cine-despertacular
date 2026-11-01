@@ -2,13 +2,18 @@
  * Votação Cine Despertacular · servidor (Google Apps Script)
  * Cole este código em Extensões > Apps Script da planilha de votação.
  * Regra: cada CPF tem UM voto (1 filme favorito) e pode trocar até o encerramento. Vale o último.
+ * O voto só é aceito com o celular dentro do local do evento (localização do aparelho).
  */
 
 // CPF do administrador (somente números). Fica só aqui, não aparece no site.
 const ADMIN_CPF = '52766438220';
 
 const FUSO = 'America/Sao_Paulo';
-const ENCERRA = '2026-10-31T22:00:00-03:00'; // fim da votação (Brasília)
+const ENCERRA = '2026-10-31T22:00:00-03:00'; // fim da votação (Brasília). Mude aqui para um novo evento.
+
+// Local onde o voto é aceito
+const LOCAL = { nome: 'Espaço Cultural Renato Russo', lat: -15.8126254, lng: -47.9059059, raio: 300 }; // raio em metros
+const MARGEM_GPS = 100; // tolerância máxima pela imprecisão do GPS dentro do prédio (metros)
 
 const FILMES = [
   { t: 'Amei te Ver', s: 14 },
@@ -29,7 +34,7 @@ const ABA_CAD = 'Cadastros';
 const ABA_VOTOS = 'Votos';
 const ABA_TESTE = 'Teste';
 const CAB_CAD = ['CPF', 'Nome', 'Data do cadastro'];
-const CAB_VOTOS = ['CPF', 'Nome', 'Filme ID', 'Filme', 'Sessão', 'Data/hora do voto', 'Trocas'];
+const CAB_VOTOS = ['CPF', 'Nome', 'Filme ID', 'Filme', 'Sessão', 'Data/hora do voto', 'Trocas', 'Distância do local (m)'];
 
 // ---------------------------------------------------------------- entrada
 function doGet() {
@@ -82,6 +87,7 @@ function votar(req) {
   const teste = !!req.teste;
   if (!(Number.isInteger(i) && i >= 0 && i < FILMES.length)) throw erro('Filme inválido.');
   const f = FILMES[i];
+  const loc = checarLocal(req);
   let nome, nomeAba;
   if (teste) {
     if (c !== ADMIN_CPF) throw erro('Modo teste só para o administrador.');
@@ -91,6 +97,8 @@ function votar(req) {
     const u = acharCadastro(c);
     if (!u) throw erro('CPF não cadastrado.');
     if (encerrada()) throw erro('A votação foi encerrada.');
+    if (loc.dist === null) throw erro('Ative a localização do celular para votar.');
+    if (!loc.dentro) throw erro('Você está a ' + distTexto(loc.dist) + ' do ' + LOCAL.nome + '. O voto só é aceito dentro do local do evento.');
     nome = u.nome; nomeAba = ABA_VOTOS;
   }
   return comTrava(() => {
@@ -99,12 +107,12 @@ function votar(req) {
     const ls = linhas(nomeAba, CAB_VOTOS);
     const k = ls.findIndex(x => String(x[0]) === fc);
     if (k === -1) {
-      sh.appendRow([fc, nome, i, f.t, f.s + 'h', agoraTexto(), 0]);
+      sh.appendRow([fc, nome, i, f.t, f.s + 'h', agoraTexto(), 0, loc.dist === null ? '' : loc.dist]);
     } else {
       const trocas = (Number(ls[k][6]) || 0) + (Number(ls[k][2]) === i ? 0 : 1);
-      sh.getRange(k + 2, 3, 1, 5).setValues([[i, f.t, f.s + 'h', agoraTexto(), trocas]]);
+      sh.getRange(k + 2, 3, 1, 6).setValues([[i, f.t, f.s + 'h', agoraTexto(), trocas, loc.dist === null ? '' : loc.dist]]);
     }
-    return { voto: i };
+    return { voto: i, dist: loc.dist, dentro: loc.dentro };
   });
 }
 
@@ -141,6 +149,23 @@ function limparTeste(req) {
 
 // ---------------------------------------------------------------- período de votação
 function encerrada() { return Date.now() >= new Date(ENCERRA).getTime(); }
+
+// ---------------------------------------------------------------- localização
+function checarLocal(req) {
+  const lat = Number(req.lat), lng = Number(req.lng), prec = Math.max(0, Number(req.prec) || 0);
+  if (!isFinite(lat) || !isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180 || (lat === 0 && lng === 0) || req.lat == null) {
+    return { dist: null, dentro: false };
+  }
+  const d = Math.round(distancia(lat, lng, LOCAL.lat, LOCAL.lng));
+  return { dist: d, dentro: d - Math.min(prec, MARGEM_GPS) <= LOCAL.raio };
+}
+function distancia(a1, o1, a2, o2) {
+  const R = 6371000, rad = Math.PI / 180;
+  const da = (a2 - a1) * rad, dob = (o2 - o1) * rad;
+  const h = Math.sin(da / 2) ** 2 + Math.cos(a1 * rad) * Math.cos(a2 * rad) * Math.sin(dob / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+function distTexto(m) { return m >= 1000 ? (m / 1000).toFixed(1).replace('.', ',') + ' km' : m + ' m'; }
 
 // ---------------------------------------------------------------- planilha
 function aba(nome, cab) {
@@ -199,7 +224,7 @@ function cpfValido(c) {
 function configurar() {
   aba(ABA_CAD, CAB_CAD); aba(ABA_VOTOS, CAB_VOTOS); aba(ABA_TESTE, CAB_VOTOS);
   const ss = SpreadsheetApp.getActive();
-  [ABA_VOTOS, ABA_TESTE].forEach(n => { const sh = ss.getSheetByName(n); if (sh.getMaxColumns() > 7) sh.getRange(1, 8, sh.getMaxRows(), sh.getMaxColumns() - 7).clearContent(); });
+  [ABA_VOTOS, ABA_TESTE].forEach(n => { const sh = ss.getSheetByName(n); if (sh.getMaxColumns() > 8) sh.getRange(1, 9, sh.getMaxRows(), sh.getMaxColumns() - 8).clearContent(); });
   const padrao = ss.getSheetByName('Página1') || ss.getSheetByName('Sheet1');
   if (padrao && ss.getSheets().length > 1) ss.deleteSheet(padrao);
 }

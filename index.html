@@ -30,6 +30,7 @@ input:focus{outline:none;border-color:var(--roxo)}
 .hide{display:none!important}
 .aviso{display:inline-flex;align-items:center;gap:8px;background:#f3f1fa;color:var(--azul2);border-radius:12px;padding:10px 14px;font-weight:600;font-size:15px}
 .aviso.fim{background:#f4e3e3;color:#8a2a2a}
+.aviso.ok{background:#e3f6ea;color:#11743a}
 #sessoes{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
 .sessao{background:var(--azul);border-radius:24px;padding:16px}
 .box.estreito{max-width:900px;margin-left:auto;margin-right:auto}
@@ -110,8 +111,12 @@ td.n{font-weight:800}
     <div id="faixaTeste" class="faixa hide">🧪 MODO TESTE · este voto NÃO entra no resultado.<br>
       <button class="btn sec" onclick="painel()">Voltar ao resultado</button></div>
     <div class="topo"><h2 id="ola" style="margin:0">Olá!</h2><button class="btn sec" onclick="sair()">Sair</button></div>
-    <p style="margin:12px 0 0">Toque no cartaz do <b>seu filme favorito</b> e depois em <b>Confirmar voto</b>. Cada CPF tem <b>um voto só</b>, mas você pode <b>trocar de filme</b> até <b>31/10 às 22h</b>. Vale o último voto.</p>
+    <p style="margin:12px 0 0">Para votar você precisa estar <b>no Espaço Cultural Renato Russo</b> com a <b>localização do celular ativada</b>. Toque no cartaz do <b>seu filme favorito</b> e depois em <b>Confirmar voto</b>. Cada CPF tem <b>um voto só</b>, mas você pode <b>trocar de filme</b> até <b>31/10 às 22h</b>. Vale o último voto.</p>
     <div id="periodo" class="aviso fim hide" style="margin-top:12px"></div>
+    <div id="localBox" style="margin-top:12px">
+      <div id="localStatus" class="aviso">📍 Para votar, você precisa estar no Espaço Cultural Renato Russo com a localização do celular ativada.</div>
+      <button class="btn sec" id="btnLocal" style="margin-top:10px;padding:10px 16px;font-size:15px" onclick="verificarLocal()">📍 Verificar minha localização</button>
+    </div>
   </div>
   <div id="sessoes"></div>
   <div class="barra" id="barra">
@@ -160,6 +165,9 @@ td.n{font-weight:800}
 const API_URL = "https://script.google.com/macros/s/AKfycbxuV13GFzDg5XFbXsAoYNr8Zq8qPHxEDOQ7RP_w4gLiov6CWxQmwnt0zru1qxhHPJG-dQ/exec";
 
 const ENCERRA = Date.parse("2026-10-31T22:00:00-03:00"); // fim da votação (Brasília)
+// Local onde o voto é aceito (o servidor confere de novo)
+const LOCAL = {nome:"Espaço Cultural Renato Russo", lat:-15.8126254, lng:-47.9059059, raio:300};
+const MARGEM_GPS = 100;
 const FILMES = [
  {t:"Amei te Ver",d:"Ricardo Cioni Garcia",g:"Ficção",m:15,c:"L",s:14},
  {t:"O Milagre dos Sinais",d:"Amanda Gomes",g:"Drama",m:11,c:"12",s:14},
@@ -204,6 +212,41 @@ async function api(acao, dados){
 }
 
 // período de votação, pelo relógio do servidor (Brasília)
+// ---------- localização ----------
+function pegarLocal(){
+  return new Promise((ok, falha)=>{
+    if(!navigator.geolocation) return falha(new Error("Este navegador não permite localização. Use o navegador do celular (Chrome ou Safari)."));
+    navigator.geolocation.getCurrentPosition(
+      p => ok({lat:p.coords.latitude, lng:p.coords.longitude, prec:p.coords.accuracy}),
+      e => falha(new Error(e.code===1
+        ? "A localização está bloqueada. Para votar, permita o acesso à localização para este site nas configurações do navegador e tente de novo."
+        : "Não foi possível encontrar sua localização. Ative o GPS (localização) do celular e tente de novo.")),
+      {enableHighAccuracy:true, timeout:20000, maximumAge:0});
+  });
+}
+function distancia(a1,o1,a2,o2){
+  const R=6371000, rad=Math.PI/180, da=(a2-a1)*rad, dob=(o2-o1)*rad;
+  const h=Math.sin(da/2)**2+Math.cos(a1*rad)*Math.cos(a2*rad)*Math.sin(dob/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+const distTexto = m => m>=1000 ? (m/1000).toFixed(1).replace(".",",")+" km" : Math.round(m)+" m";
+function avaliarLocal(p){
+  const d = distancia(p.lat,p.lng,LOCAL.lat,LOCAL.lng);
+  return {d, dentro: d - Math.min(p.prec,MARGEM_GPS) <= LOCAL.raio};
+}
+function statusLocal(tipo, txt){ const s=document.getElementById("localStatus"); s.className="aviso "+tipo; s.textContent=txt; }
+async function verificarLocal(){
+  statusLocal("", "📍 Procurando sua localização…");
+  const ld = document.getElementById("carregando"); ld.classList.remove("hide");
+  try{
+    const p = await pegarLocal(), a = avaliarLocal(p);
+    if(a.dentro) statusLocal("ok", "✅ Você está no "+LOCAL.nome+". Pode votar!");
+    else statusLocal("fim", "⛔ Você está a "+distTexto(a.d)+" do "+LOCAL.nome+". O voto só é aceito dentro do local do evento."+(modoTeste?" (No modo teste o voto é aceito mesmo assim.)":""));
+    return p;
+  }catch(e){ statusLocal("fim", "⚠️ "+e.message); return null; }
+  finally{ ld.classList.add("hide"); }
+}
+
 function situacao(){
   if(modoTeste) return "aberta";
   return Date.now()+offset >= ENCERRA ? "encerrada" : "aberta";
@@ -261,8 +304,10 @@ function abrirVotacao(){
   per.classList.toggle("hide", st==="aberta");
   per.textContent = "⛔ A votação foi encerrada.";
   document.getElementById("barra").classList.toggle("hide", st!=="aberta");
+  document.getElementById("localBox").classList.toggle("hide", st!=="aberta");
   montar();
   mostrar("telaVoto");
+  if(st==="aberta") verificarLocal();
 }
 
 function montar(){
@@ -300,9 +345,12 @@ async function votar(){
   const f = FILMES[escolhido];
   const msg = meuVoto===null ? `Confirmar seu voto em "${f.t}"?` : `Trocar seu voto de "${FILMES[meuVoto].t}" para "${f.t}"?`;
   if(!confirm(msg + "\n\nCada CPF tem um voto só. Vale o último, até 31/10 às 22h.")) return;
+  const p = await verificarLocal();
+  if(!p && !modoTeste){ alert(document.getElementById("localStatus").textContent.replace("⚠️ ","")); return; }
+  if(p && !avaliarLocal(p).dentro && !modoTeste){ alert("Você está fora do "+LOCAL.nome+". O voto só é aceito dentro do local do evento."); return; }
   try{
     const troca = meuVoto!==null;
-    const r = await api("votar",{cpf:atual.cpf, filme:escolhido, teste:modoTeste});
+    const r = await api("votar",{cpf:atual.cpf, filme:escolhido, teste:modoTeste, lat:p?p.lat:null, lng:p?p.lng:null, prec:p?p.prec:null});
     meuVoto = r.voto;
     telaFeito(r.voto, false, troca);
   }catch(e){ alert(e.message); }
